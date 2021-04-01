@@ -8,4 +8,5 @@ Exemplos tirados [deste tutorial](https://www.flipcode.com/archives/The_Art_of_D
 
 * [Demo 1 - Starfield](demo-1/)
 * [Demo 2 - Cross Fade](demo-2/)
+* [Demo 3 - Plasma](demo-3/)
 
