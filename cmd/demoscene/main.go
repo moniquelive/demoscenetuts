@@ -8,14 +8,16 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+
+	"github.com/moniquelive/demoscenetuts/internal/stars"
 )
 
 const (
-	screenWidth  = 320
-	screenHeight = 200
+	ScreenWidth  = 320
+	ScreenHeight = 200
 )
 
-var stars []*Star
+var d = &stars.Stars{}
 
 type Game struct {
 	doubleBuffer *image.RGBA
@@ -26,10 +28,7 @@ func (g *Game) Update() error {
 		g.doubleBuffer, g.doubleBuffer.Bounds(),
 		image.Black, image.Black.Bounds().Min,
 		draw.Src)
-	for i := 0; i < maxStars; i++ {
-		stars[i].Update()
-		stars[i].Draw(g.doubleBuffer)
-	}
+	d.Draw(g.doubleBuffer)
 	return nil
 }
 
@@ -39,21 +38,15 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return screenWidth, screenHeight
+	return ScreenWidth, ScreenHeight
 }
 
 func main() {
-	ebiten.SetWindowSize(screenWidth*2, screenHeight*2)
+	ebiten.SetWindowSize(ScreenWidth*2, ScreenHeight*2)
 	ebiten.SetWindowTitle("Ebiten Demoscene")
-	stars = make([]*Star, maxStars)
-	for i := 0; i < maxStars; i++ {
-		stars[i] = NewStar(
-			float64(theRand.next()%screenWidth),
-			float64(theRand.next()%screenHeight),
-			float64(theRand.next()%maxPlanes))
-	}
+	d.Setup(ScreenWidth, ScreenHeight)
 	g := &Game{
-		doubleBuffer: image.NewRGBA(image.Rect(0, 0, screenWidth, screenHeight)),
+		doubleBuffer: image.NewRGBA(image.Rect(0, 0, ScreenWidth, ScreenHeight)),
 	}
 	if err := ebiten.RunGame(g); err != nil {
 		log.Fatal(err)
