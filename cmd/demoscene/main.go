@@ -8,7 +8,6 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-
 	"github.com/moniquelive/demoscenetuts/internal/stars"
 )
 
@@ -17,6 +16,7 @@ const (
 	ScreenHeight = 200
 )
 
+// escolhe o demo
 var d = &stars.Stars{}
 
 type Game struct {
@@ -24,6 +24,9 @@ type Game struct {
 }
 
 func (g *Game) Update() error {
+	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+		return fmt.Errorf("end")
+	}
 	draw.Draw(
 		g.doubleBuffer, g.doubleBuffer.Bounds(),
 		image.Black, image.Black.Bounds().Min,

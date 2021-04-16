@@ -4,6 +4,7 @@ import (
 	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/moniquelive/demoscenetuts/internal/rand"
 	"github.com/moniquelive/demoscenetuts/internal/utils"
 )
 
@@ -14,38 +15,33 @@ const (
 
 var xVel float64
 
-const (
-	ScreenWidth  = 320
-	ScreenHeight = 200
-)
-
-func updateXVel() {
-	mouseX, mouseY := ebiten.CursorPosition()
-	if mouseX > 0 && mouseX < ScreenWidth &&
-		mouseY > 0 && mouseY < ScreenHeight {
-		xVel = utils.Interpolate(mouseX, 0, ScreenWidth, 0, 0.25)
-	}
-}
-
 type Star struct {
+	screenWidth,
+	screenHeight int
 	x, y, p float64
 }
 
-func NewStar(x, y, p float64) *Star {
-	return &Star{x: x, y: y, p: p}
+func NewStar(screenWidth, screenHeight int) *Star {
+	return &Star{
+		screenWidth:  screenWidth,
+		screenHeight: screenHeight,
+		x:            float64(rand.Between(0, screenWidth)),
+		y:            float64(rand.Between(0, screenHeight)),
+		p:            float64(rand.Between(0, maxPlanes)),
+	}
 }
 
 func (s *Star) Update() {
-	updateXVel()
+	s.updateXVel()
 	s.x += (1 + s.p) * xVel
-	if s.x >= ScreenWidth {
+	if s.x >= float64(s.screenWidth) {
 		s.x = 0
-		s.y = float64(utils.TheRand.Next() % ScreenHeight)
+		s.y = float64(rand.Between(0, s.screenHeight))
 	}
 }
 
 func (s Star) Draw(buffer *image.RGBA) {
-	i := int(ScreenWidth*s.y + s.x)
+	i := int(float64(s.screenWidth)*s.y + s.x)
 	if 4*i+3 > len(buffer.Pix) {
 		return
 	}
@@ -55,6 +51,14 @@ func (s Star) Draw(buffer *image.RGBA) {
 	buffer.Pix[4*i+1] = gray
 	buffer.Pix[4*i+2] = gray
 	buffer.Pix[4*i+3] = uint8(0xff)
+}
+
+func (s Star) updateXVel() {
+	mouseX, mouseY := ebiten.CursorPosition()
+	if mouseX > 0 && mouseX < s.screenWidth &&
+		mouseY > 0 && mouseY < s.screenHeight {
+		xVel = utils.Interpolate(float64(mouseX), 0, float64(s.screenWidth), 0, 0.25)
+	}
 }
 
 type Stars struct {
@@ -75,9 +79,6 @@ func (s *Stars) Setup(screenWidth, screenHeight int) {
 	s.screenHeight = screenHeight
 	s.stars = make([]*Star, maxStars)
 	for i := 0; i < maxStars; i++ {
-		s.stars[i] = NewStar(
-			float64(utils.TheRand.Next()%ScreenWidth),
-			float64(utils.TheRand.Next()%ScreenHeight),
-			float64(utils.TheRand.Next()%maxPlanes))
+		s.stars[i] = NewStar(screenWidth, screenHeight)
 	}
 }

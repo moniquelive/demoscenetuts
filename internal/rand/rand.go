@@ -1,4 +1,6 @@
-package utils
+package rand
+
+import "math"
 
 type rand struct {
 	x, y, z, w uint32
@@ -13,4 +15,16 @@ func (r *rand) Next() uint32 {
 	r.x, r.y, r.z = r.y, r.z, r.w
 	r.w = (r.w ^ (r.w >> 19)) ^ (t ^ (t >> 8))
 	return r.w
+}
+
+func NextUint32() uint32 {
+	return TheRand.Next()
+}
+
+func Random() float64 {
+	return float64(TheRand.Next()) / math.MaxUint32
+}
+
+func Between(min, max int) int {
+	return int(Random()*float64(max-min)) + min
 }
