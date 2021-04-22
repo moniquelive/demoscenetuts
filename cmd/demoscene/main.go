@@ -5,10 +5,13 @@ import (
 	"image"
 	"image/draw"
 	"log"
+	"os"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/moniquelive/demoscenetuts/internal/stars"
+	"github.com/moniquelive/demoscenetuts/internal/stars3D"
 )
 
 const (
@@ -16,11 +19,23 @@ const (
 	ScreenHeight = 200
 )
 
-// escolhe o demo
-var d = &stars.Stars{}
+type demo interface {
+	Draw(*image.RGBA)
+	Setup(int, int)
+}
+
+var d demo
 
 type Game struct {
 	doubleBuffer *image.RGBA
+}
+
+var demos map[string]demo
+
+func init() {
+	demos = make(map[string]demo)
+	demos["stars"] = &stars.Stars{}
+	demos["3d"] = &stars3D.Stars{}
 }
 
 func (g *Game) Update() error {
@@ -45,6 +60,16 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 func main() {
+	if len(os.Args) != 2 {
+		help()
+		return
+	}
+	var ok bool
+	if d, ok = demos[os.Args[1]]; !ok {
+		log.Printf("Demo não encontrado: %q\n", os.Args[1])
+		help()
+		return
+	}
 	ebiten.SetWindowSize(ScreenWidth*2, ScreenHeight*2)
 	ebiten.SetWindowTitle("Ebiten Demoscene")
 	d.Setup(ScreenWidth, ScreenHeight)
@@ -54,4 +79,13 @@ func main() {
 	if err := ebiten.RunGame(g); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func help() {
+	demosList := make([]string, 0, len(demos))
+	for k := range demos {
+		demosList = append(demosList, k)
+	}
+	log.Println("Escolha o demo: [", strings.Join(demosList, ", "), "]")
+	return
 }
