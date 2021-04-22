@@ -74,11 +74,11 @@ func (s Stars) Draw(buffer *image.RGBA) {
 	}
 }
 
-func (s *Stars) Setup(screenWidth, screenHeight int) {
-	s.screenWidth = screenWidth
-	s.screenHeight = screenHeight
+func (s *Stars) Setup() (int, int, int) {
+	s.screenWidth, s.screenHeight = 320, 200
 	s.stars = make([]*Star, maxStars)
 	for i := 0; i < maxStars; i++ {
-		s.stars[i] = NewStar(screenWidth, screenHeight)
+		s.stars[i] = NewStar(s.screenWidth, s.screenHeight)
 	}
+	return s.screenWidth, s.screenHeight, 2
 }

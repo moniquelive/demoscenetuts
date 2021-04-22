@@ -10,18 +10,19 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/moniquelive/demoscenetuts/internal/crossfade"
 	"github.com/moniquelive/demoscenetuts/internal/stars"
 	"github.com/moniquelive/demoscenetuts/internal/stars3D"
 )
 
-const (
+var (
 	ScreenWidth  = 320
 	ScreenHeight = 200
 )
 
 type demo interface {
 	Draw(*image.RGBA)
-	Setup(int, int)
+	Setup() (int, int, int)
 }
 
 var d demo
@@ -36,6 +37,7 @@ func init() {
 	demos = make(map[string]demo)
 	demos["stars"] = &stars.Stars{}
 	demos["3d"] = &stars3D.Stars{}
+	demos["crossfade"] = &crossfade.Cross{}
 }
 
 func (g *Game) Update() error {
@@ -70,9 +72,10 @@ func main() {
 		help()
 		return
 	}
-	ebiten.SetWindowSize(ScreenWidth*2, ScreenHeight*2)
+	zoom := 1
+	ScreenWidth, ScreenHeight, zoom = d.Setup()
+	ebiten.SetWindowSize(ScreenWidth*zoom, ScreenHeight*zoom)
 	ebiten.SetWindowTitle("Ebiten Demoscene")
-	d.Setup(ScreenWidth, ScreenHeight)
 	g := &Game{
 		doubleBuffer: image.NewRGBA(image.Rect(0, 0, ScreenWidth, ScreenHeight)),
 	}
