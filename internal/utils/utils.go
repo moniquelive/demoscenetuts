@@ -21,6 +21,10 @@ func ConstrainU8(i, low, high uint8) uint8 {
 	return uint8(math.Max(math.Min(float64(i), float64(high)), float64(low)))
 }
 
+func ConstrainU32(i, low, high uint32) uint32 {
+	return uint32(math.Max(math.Min(float64(i), float64(high)), float64(low)))
+}
+
 func Interpolate(i, start1, stop1, start2, stop2 float64) float64 {
 	//return i * (maxTo - minTo) / (maxFrom - minFrom)
 	newVal := (i-start1)/(stop1-start1)*(stop2-start2) + start2
