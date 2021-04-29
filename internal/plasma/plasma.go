@@ -11,29 +11,29 @@ import (
 	"github.com/moniquelive/demoscenetuts/internal/utils"
 )
 
-var (
-	frameCount = 0
-)
-
 type Plasma struct {
 	screenWidth  int
 	screenHeight int
+	frameCount   int
 	bg           *image.RGBA
 	plasma1      *image.RGBA
 	plasma2      *image.RGBA
 }
 
-func (c Plasma) Draw(buffer *image.RGBA) {
+func (c *Plasma) Draw(buffer *image.RGBA) {
 	c.update(buffer)
 }
 
 func (c *Plasma) Setup() (int, int, int) {
 	c.bg = utils.LoadFileRGBA("plasma.png")
-	doubleBounds := image.Rect(0, 0, c.bg.Bounds().Dx()*2, c.bg.Bounds().Dy()*2)
+	bgw := c.bg.Bounds().Dx()
+	bgh := c.bg.Bounds().Dy()
+
+	doubleBounds := image.Rect(0, 0, bgw*2, bgh*2)
 	c.plasma1 = image.NewRGBA(doubleBounds)
 	c.plasma2 = image.NewRGBA(doubleBounds)
-	c.screenWidth = c.bg.Bounds().Dx()
-	c.screenHeight = c.bg.Bounds().Dy()
+	c.screenWidth = bgw
+	c.screenHeight = bgh
 	c.plasma()
 	return c.screenWidth, c.screenHeight, 2
 }
@@ -51,14 +51,10 @@ func (c Plasma) f2(i, j int) uint8 {
 	// 64 + 63 * sin( i/(37+15*cos(j/74)) ) * cos( j/(31+11*sin(i/57))) )
 	ii := float64(i)
 	jj := float64(j)
-	return uint8(64.0 +
-		63.0*math.Sin(
-			ii/(37.0+
-				15.0*math.Cos(jj/74.0)))*
-			math.Cos(jj/(31.0+11.0*math.Sin(ii/57.0))))
+	return uint8(64.0 + 63.0*math.Sin(ii/(37.0+15.0*math.Cos(jj/74.0)))*math.Cos(jj/(31.0+11.0*math.Sin(ii/57.0))))
 }
 
-func (c *Plasma) plasma() {
+func (c Plasma) plasma() {
 	w := c.plasma1.Bounds().Dx()
 	h := c.plasma1.Bounds().Dy()
 	loc := 0
@@ -79,40 +75,36 @@ func (c *Plasma) plasma() {
 	}
 }
 
-func (c Plasma) update(r *image.RGBA) {
-	// move plasma with more sine functions :)
-	halfW := float64(r.Bounds().Dx()) / 2.0
-	halfH := float64(r.Bounds().Dy()) / 2.0
-	x1 := int(halfW) + int((halfW-1)*math.Cos(float64(frameCount)/97.0))
-	x2 := int(halfW) + int((halfW-1)*math.Sin(float64(-frameCount)/114.0))
-	x3 := int(halfW) + int((halfW-1)*math.Sin(float64(-frameCount)/137.0))
-
-	y1 := int(halfH) + int((halfH-1)*math.Sin(float64(frameCount)/123.0))
-	y2 := int(halfH) + int((halfH-1)*math.Cos(float64(-frameCount)/75.0))
-	y3 := int(halfH) + int((halfH-1)*math.Cos(float64(-frameCount)/108.0))
-
-	w1 := c.plasma1.Bounds().Dx()
-	w2 := c.plasma2.Bounds().Dx()
-
-	src1 := 4 * (y1*w1 + x1)
-	src2 := 4 * (y2*w2 + x2)
-	src3 := 4 * (y3*w1 + x3)
-
-	loc := 0
+func (c *Plasma) update(r *image.RGBA) {
 	w := r.Bounds().Dx()
 	h := r.Bounds().Dy()
+	// move plasma with more sine functions :)
+	halfW := float64(w) / 2.0
+	halfH := float64(h) / 2.0
+	x1 := int(halfW) + int((halfW-1)*math.Cos(float64(c.frameCount)/97.0))
+	x2 := int(halfW) + int((halfW-1)*math.Sin(float64(-c.frameCount)/114.0))
+	x3 := int(halfW) + int((halfW-1)*math.Sin(float64(-c.frameCount)/137.0))
+
+	y1 := int(halfH) + int((halfH-1)*math.Sin(float64(c.frameCount)/123.0))
+	y2 := int(halfH) + int((halfH-1)*math.Cos(float64(-c.frameCount)/75.0))
+	y3 := int(halfH) + int((halfH-1)*math.Cos(float64(-c.frameCount)/108.0))
+
+	src1 := 4 * (y1*c.plasma1.Bounds().Dx() + x1)
+	src2 := 4 * (y2*c.plasma2.Bounds().Dx() + x2)
+	src3 := 4 * (y3*c.plasma1.Bounds().Dx() + x3)
+
+	loc := 0
 	for y := 0; y < h; y++ {
 		for x := 0; x < w; x++ {
-			rr := uint32(c.bg.Pix[loc+0])
-			gg := uint32(c.bg.Pix[loc+1])
-			bb := uint32(c.bg.Pix[loc+2])
-			rr1 := uint32(c.plasma1.Pix[src1+0])
-			gg2 := uint32(c.plasma2.Pix[src2+1])
-			bb2 := uint32(c.plasma2.Pix[src3+2])
-			r.Pix[loc+0] = uint8(utils.ConstrainU32(rr+rr1, 0, 255))
-			r.Pix[loc+1] = uint8(utils.ConstrainU32(gg+gg2, 0, 255))
-			r.Pix[loc+2] = uint8(utils.ConstrainU32(bb+bb2, 0, 255))
-			r.Pix[loc+3] = 255
+			for rgb := 0; rgb < 4; rgb++ {
+				r.Pix[loc+rgb] = uint8(
+					utils.ConstrainU32(
+						uint32(c.bg.Pix[loc+rgb])+
+							uint32(c.plasma1.Pix[src1+rgb])>>2+
+							uint32(c.plasma2.Pix[src2+rgb])>>2+
+							uint32(c.plasma2.Pix[src3+rgb])>>2,
+						0, 255))
+			}
 			loc += 4
 			src1 += 4
 			src2 += 4
@@ -122,5 +114,5 @@ func (c Plasma) update(r *image.RGBA) {
 		src2 += w * 4
 		src3 += w * 4
 	}
-	frameCount++
+	c.frameCount++
 }
