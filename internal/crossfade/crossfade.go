@@ -8,11 +8,8 @@
 package crossfade
 
 import (
-	"bytes"
 	"image"
 	_ "image/png"
-	"io/ioutil"
-	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/moniquelive/demoscenetuts/internal/utils"
@@ -26,54 +23,32 @@ var (
 type Cross struct {
 	screenWidth  int
 	screenHeight int
-	at           image.Image
-	ww           image.Image
+	at           *image.RGBA
+	ww           *image.RGBA
 }
 
 func (c Cross) Draw(buffer *image.RGBA) {
 	if (k < 0) || (k > 1) {
 		step *= -1
 	}
-	k += step * (ebiten.CurrentTPS() / 100.0)
+	k += step * ebiten.CurrentTPS() / 100.0
 	blendLerp(c.ww, c.at, utils.Constrain(k, 0, 1), buffer)
 }
 
 func (c *Cross) Setup() (int, int, int) {
-	c.at = loadFile("at.png")
-	c.ww = loadFile("ww.png")
+	c.at = utils.LoadFileRGBA("at.png")
+	c.ww = utils.LoadFileRGBA("ww.png")
 	c.screenWidth = c.at.Bounds().Dx()
 	c.screenHeight = c.at.Bounds().Dy()
 	return c.screenWidth, c.screenHeight, 1
 }
 
-func loadFile(filename string) image.Image {
-	var err error
-
-	var f []byte
-	if f, err = ioutil.ReadFile(filename); err != nil {
-		log.Fatal(err)
-	}
-	var img image.Image
-	if img, _, err = image.Decode(bytes.NewReader(f)); err != nil {
-		log.Fatal(err)
-	}
-	return img
-}
-
-func blendLerp(img1, img2 image.Image, k float64, r *image.RGBA) {
-	w := img1.Bounds().Dx()
-	h := img1.Bounds().Dy()
-	i := 0
-	for y := 0; y < h; y++ {
-		for x := 0; x < w; x++ {
-			r1, g1, b1, a1 := img1.At(x, y).RGBA()
-			r2, g2, b2, a2 := img2.At(x, y).RGBA()
-			r.Pix[i+0] = uint8(myLerp(float64(r1>>8), float64(r2>>8), k))
-			r.Pix[i+1] = uint8(myLerp(float64(g1>>8), float64(g2>>8), k))
-			r.Pix[i+2] = uint8(myLerp(float64(b1>>8), float64(b2>>8), k))
-			r.Pix[i+3] = uint8(myLerp(float64(a1>>8), float64(a2>>8), k))
-			i += 4
-		}
+func blendLerp(img1, img2 *image.RGBA, k float64, r *image.RGBA) {
+	bb := img1.Bounds().Dx() * img1.Bounds().Dy() * 4
+	for i := 0; i < bb; i++ {
+		f1 := float64(img1.Pix[i])
+		f2 := float64(img2.Pix[i])
+		r.Pix[i] = uint8(myLerp(f1, f2, k))
 	}
 }
 
@@ -85,8 +60,8 @@ func myLerp(a, b, k float64) float64 {
 //	const c1 = 1.70158
 //	const c2 = c1 * 1.525
 //	if x < 0.5 {
-//		return (math.Pow(2*x, 2) * ((c2+1)*2*x - c2)) / 2
+//		return ((2 * x * 2 * x) * ((c2+1)*2*x - c2)) / 2
 //	} else {
-//		return (math.Pow(2*x-2, 2)*((c2+1)*(x*2-2)+c2) + 2) / 2
+//		return (((2*x-2)*(2*x-2))*((c2+1)*(x*2-2)+c2) + 2) / 2
 //	}
 //}
