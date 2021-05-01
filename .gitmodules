@@ -1,0 +1,4 @@
+[submodule "_site"]
+	path = _site
+	url = git@github.com:moniquelive/demoscenetuts.git
+	branch = gh-pages
