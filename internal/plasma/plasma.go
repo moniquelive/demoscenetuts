@@ -4,12 +4,16 @@
 package plasma
 
 import (
+	_ "embed"
 	"image"
 	_ "image/png"
 	"math"
 
 	"github.com/moniquelive/demoscenetuts/internal/utils"
 )
+
+//go:embed plasma.png
+var bgBytes []byte
 
 type Plasma struct {
 	screenWidth  int
@@ -25,7 +29,7 @@ func (c *Plasma) Draw(buffer *image.RGBA) {
 }
 
 func (c *Plasma) Setup() (int, int, int) {
-	c.bg = utils.LoadFileRGBA("plasma.png")
+	c.bg = utils.LoadBufferRGBA(bgBytes)
 	bgw := c.bg.Bounds().Dx()
 	bgh := c.bg.Bounds().Dy()
 

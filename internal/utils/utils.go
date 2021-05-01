@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"image"
 	"image/color"
 	"image/draw"
@@ -57,3 +58,13 @@ func LoadFileRGBA(filename string) *image.RGBA {
 	return rgba
 }
 
+func LoadBufferRGBA(b []byte) *image.RGBA {
+	img, _, err := image.Decode(bytes.NewReader(b))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	rgba := image.NewRGBA(img.Bounds())
+	draw.Draw(rgba, rgba.Bounds(), img, image.Point{}, draw.Src)
+	return rgba
+}

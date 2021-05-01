@@ -8,12 +8,19 @@
 package crossfade
 
 import (
+	_ "embed"
 	"image"
 	_ "image/png"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/moniquelive/demoscenetuts/internal/utils"
 )
+
+//go:embed ww.png
+var wwBytes []byte
+
+//go:embed at.png
+var atBytes []byte
 
 var (
 	step = 0.025
@@ -36,8 +43,8 @@ func (c Cross) Draw(buffer *image.RGBA) {
 }
 
 func (c *Cross) Setup() (int, int, int) {
-	c.at = utils.LoadFileRGBA("at.png")
-	c.ww = utils.LoadFileRGBA("ww.png")
+	c.at = utils.LoadBufferRGBA(atBytes)
+	c.ww = utils.LoadBufferRGBA(wwBytes)
 	c.screenWidth = c.at.Bounds().Dx()
 	c.screenHeight = c.at.Bounds().Dy()
 	return c.screenWidth, c.screenHeight, 1
