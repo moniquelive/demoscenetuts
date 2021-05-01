@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<script src="wasm_exec.js"></script>
+<script>
+  // Polyfill
+  if (!WebAssembly.instantiateStreaming) {
+    WebAssembly.instantiateStreaming = async (resp, importObject) => {
+      const source = await (await resp).arrayBuffer();
+      return await WebAssembly.instantiate(source, importObject);
+    };
+  }
+
+  function getParamValue(paramName) {
+    const url = window.location.search.substring(1); //get rid of "?" in querystring
+    const qArray = url.split('&'); //get key-value pairs
+    for (let i = 0; i < qArray.length; i++) {
+      const pArr = qArray[i].split('='); //split key and value
+      if (pArr[0] === paramName)
+        return pArr[1]; //return value
+    }
+  }
+
+  const go = new Go();
+  const effectName = getParamValue('effect');
+  go.argv = ['demo_fx', effectName];
+  WebAssembly.instantiateStreaming(fetch("demo_fx.wasm"), go.importObject).then(result => {
+    go.run(result.instance);
+  });
+</script>
