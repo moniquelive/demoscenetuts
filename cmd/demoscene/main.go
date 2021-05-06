@@ -11,6 +11,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/moniquelive/demoscenetuts/internal/crossfade"
+	"github.com/moniquelive/demoscenetuts/internal/filters"
 	"github.com/moniquelive/demoscenetuts/internal/plasma"
 	"github.com/moniquelive/demoscenetuts/internal/stars"
 	"github.com/moniquelive/demoscenetuts/internal/stars3D"
@@ -40,6 +41,7 @@ func init() {
 	demos["3d"] = &stars3D.Stars{}
 	demos["crossfade"] = &crossfade.Cross{}
 	demos["plasma"] = &plasma.Plasma{}
+	demos["filter"] = &filters.Filter{}
 }
 
 func (g *Game) Update() error {
