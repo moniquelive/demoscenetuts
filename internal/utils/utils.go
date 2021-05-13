@@ -68,3 +68,7 @@ func LoadBufferRGBA(b []byte) *image.RGBA {
 	draw.Draw(rgba, rgba.Bounds(), img, image.Point{}, draw.Src)
 	return rgba
 }
+
+func Lerp(a, b, k float64) float64 {
+	return a + (b-a)*k //easeInOutBack(k)
+}

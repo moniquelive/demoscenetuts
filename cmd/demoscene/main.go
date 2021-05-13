@@ -11,6 +11,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/moniquelive/demoscenetuts/internal/crossfade"
+	"github.com/moniquelive/demoscenetuts/internal/cyber1"
 	"github.com/moniquelive/demoscenetuts/internal/filters"
 	"github.com/moniquelive/demoscenetuts/internal/plasma"
 	"github.com/moniquelive/demoscenetuts/internal/stars"
@@ -42,6 +43,7 @@ func init() {
 	demos["crossfade"] = &crossfade.Cross{}
 	demos["plasma"] = &plasma.Plasma{}
 	demos["filter"] = &filters.Filter{}
+	demos["cyber1"] = &cyber1.Lerp{}
 }
 
 func (g *Game) Update() error {

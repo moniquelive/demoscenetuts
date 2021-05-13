@@ -55,12 +55,8 @@ func blendLerp(img1, img2 *image.RGBA, k float64, r *image.RGBA) {
 	for i := 0; i < bb; i++ {
 		f1 := float64(img1.Pix[i])
 		f2 := float64(img2.Pix[i])
-		r.Pix[i] = uint8(myLerp(f1, f2, k))
+		r.Pix[i] = uint8(utils.Lerp(f1, f2, k))
 	}
-}
-
-func myLerp(a, b, k float64) float64 {
-	return a + (b-a)*k //easeInOutBack(k)
 }
 
 //func easeInOutBack(x float64) float64 {
