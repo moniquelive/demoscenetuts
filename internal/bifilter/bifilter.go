@@ -40,7 +40,8 @@ func (c *Bifilter) Draw(buffer *image.RGBA) {
 		c.DistortBili(buffer, x1, y1, x2, y2)
 	}
 	c.frameCount += 2
-	if inpututil.IsMouseButtonJustReleased(ebiten.MouseButtonLeft) {
+	if inpututil.IsMouseButtonJustReleased(ebiten.MouseButtonLeft) ||
+		ebiten.TouchIDs() != nil {
 		c.flip = !c.flip
 	}
 }
