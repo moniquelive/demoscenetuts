@@ -9,177 +9,34 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
         crossorigin="anonymous">
+  <style>
+    @media (max-width: 767px) {
+      .w-50 {
+        width: 100% !important;
+      }
+    }
+  </style>
 </head>
 <body>
 <div class="container">
   <h1>Tutoriais de Efeitos de Demos</h1>
-
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi autem, cum cupiditate doloribus dolorum ex excepturi illo inventore ipsum laboriosam modi nesciunt possimus praesentium quae quibusdam quos repellendus soluta.
+    Exemplos de programação criativa em web assembly.
+    Alguns da série de tutoriais <a
+    href="https://www.flipcode.com/archives/articles.shtml">FlipCode</a>.
+    Outros na nossa própria cabeça.
   </p>
-  <div class="row">
-    <div class="col-sm">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          Starfield 2D
-          <button type="button" class="btn btn-primary" data-toggle="modal"
-                  data-target="#iframeModal"
-                  data-effect="stars"
-                  data-width="320"
-                  data-height="200">
-            Exibir Efeito
-          </button>
-        </div>
-        <div class="card-body">
-          <p class="card-text">
-            Efeito de estrelas em scroll horizontal, com velocidade proporcional a posição do cursor do mouse sobre o canvas.
-          </p>
-        </div>
-      </div>
-    </div>
 
-    <div class="col-sm">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          Starfield 3D
-          <button type="button" class="btn btn-primary" data-toggle="modal"
-                  data-target="#iframeModal"
-                  data-effect="3d"
-                  data-width="320"
-                  data-height="200">
-            Exibir Efeito
-          </button>
-        </div>
-        <div class="card-body">
-          <p class="card-text">
-            Efeito de estrelas em movimentação 3D.
-          </p>
-        </div>
-      </div>
-    </div>
+  <div class="effects d-flex flex-wrap p-2">
   </div>
-  <br/>
-
-  <div class="row">
-    <div class="col-sm">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          Crossfade
-          <button type="button" class="btn btn-primary" data-toggle="modal"
-                  data-target="#iframeModal"
-                  data-effect="crossfade"
-                  data-width="200"
-                  data-height="320">
-            Exibir Efeito
-          </button>
-        </div>
-        <div class="card-body">
-          <p class="card-text">
-            Efeito de transição entre duas imagens, pixel a pixel. Demonstra o uso de interpolação linear.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          Plasma
-          <button type="button" class="btn btn-primary" data-toggle="modal"
-                  data-target="#iframeModal"
-                  data-effect="plasma"
-                  data-width="320"
-                  data-height="200">
-            Exibir Efeito
-          </button>
-        </div>
-        <div class="card-body">
-          <p class="card-text">
-            Efeito de plasma aplicado sobre imagem, pixel a pixel. Demonstra combinação de pixels manual.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br/>
-
-  <div class="row">
-    <div class="col-sm">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          Filter
-          <button type="button" class="btn btn-primary" data-toggle="modal"
-                  data-target="#iframeModal"
-                  data-effect="filter"
-                  data-width="320"
-                  data-height="200">
-            Exibir Efeito
-          </button>
-        </div>
-        <div class="card-body">
-          <p class="card-text">
-            Efeito de fogo usando filtros de imagem.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          Cyber1 / Lerp
-          <button type="button" class="btn btn-primary" data-toggle="modal"
-                  data-target="#iframeModal"
-                  data-effect="cyber1"
-                  data-width="320"
-                  data-height="200">
-            Exibir Efeito
-          </button>
-        </div>
-        <div class="card-body">
-          <p class="card-text">
-            Efeito de interpolação linear usando pixels da imagem.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br/>
-
-  <div class="row">
-    <div class="col-sm">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          Bi-Linear filter
-          <button type="button" class="btn btn-primary" data-toggle="modal"
-                  data-target="#iframeModal"
-                  data-effect="bifilter"
-                  data-width="320"
-                  data-height="200">
-            Exibir Efeito
-          </button>
-        </div>
-        <div class="card-body">
-          <p class="card-text">
-            Efeito de mapa de distorção com filtro bilinear (toque/clique na
-            tela para alternar as versões!)
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm">
-    </div>
-  </div>
-  <br/>
 </div>
 
 <div class="modal fade" id="iframeModal" tabindex="-1" role="dialog"
      aria-labelledby="iframeModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog mw-100 w-75" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <iframe src="" frameborder="0"></iframe>
+        <iframe style="display: block;" src="" frameborder="0"></iframe>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -190,20 +47,87 @@
   </div>
 </div>
 
+<script type="text/html" id="card-template">
+  <div class="flex-shrink-0 p-sm-2 w-50">
+    <div class="card">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+        data-content-prepend="title">
+        <button type="button" class="btn btn-primary" data-toggle="modal"
+                data-target="#iframeModal"
+                data-template-bind='[
+     {"attribute": "data-effect", "value": "effect"},
+     {"attribute": "data-width", "value": "width"},
+     {"attribute": "data-height", "value": "height"}]'>
+          Exibir Efeito
+        </button>
+      </div>
+      <div class="card-body">
+        <p class="card-text" data-content="description">
+        </p>
+      </div>
+    </div>
+  </div>
+</script>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery.loadtemplate/1.5.10/jquery.loadTemplate.min.js"
+  crossorigin="anonymous"></script>
 <script
   src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
   crossorigin="anonymous"></script>
 
 <script>
+  const effects = [
+    {
+      effect: "stars", width: "320", height: "200",
+      title: "Starfield 2D",
+      description: "Efeito de estrelas em scroll horizontal, com velocidade proporcional a posição do cursor do mouse sobre o canvas."
+    },
+    {
+      effect: "3d", width: "320", height: "200",
+      title: "Starfield 3D",
+      description: "Efeito de estrelas em movimentação 3D."
+    },
+    {
+      effect: "crossfade", width: "200", height: "320",
+      title: "Crossfade",
+      description: "Efeito de transição entre duas imagens, pixel a pixel. Demonstra o uso de interpolação linear."
+    },
+    {
+      title: "Plasma", width: "320", height: "200",
+      effect: "plasma",
+      description: "Efeito de plasma aplicado sobre imagem, pixel a pixel. Demonstra combinação de pixels manual."
+    },
+    {
+      title: "Filter", width: "320", height: "200",
+      effect: "filter",
+      description: "Efeito de fogo usando filtros de imagem."
+    },
+    {
+      effect: "cyber1", width: "320", height: "200",
+      title: "Cyber1 / Lerp",
+      description: "Efeito de interpolação linear usando pixels da imagem."
+    },
+    {
+      effect: "bifilter", width: "320", height: "200",
+      title: "Bi-Linear filter",
+      description: "Efeito de mapa de distorção com filtro bilinear (toque/clique na tela para alternar as versões!)"
+    }
+  ];
+  $(document).ready(
+    () => $(".effects").loadTemplate($("#card-template"),
+      effects))
+
   $('#iframeModal').on('shown.bs.modal', ({target, relatedTarget}) => {
     const button = $(relatedTarget) // Button that triggered the modal
     const effectName = button.data('effect')
-    const width = button.data('width')
-    const height = button.data('height')
+    const width = button.data('width') * 2
+    const height = button.data('height') * 2
     const iframe = $(target).find('iframe')[0]
     iframe.width = width
     iframe.height = height
