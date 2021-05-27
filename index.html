@@ -9,15 +9,24 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
         crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
   <style>
     @media (max-width: 767px) {
       .w-50 {
         width: 100% !important;
       }
+      .github-fork-ribbon:before {
+        background-color: #343a40 !important;
+      }
     }
   </style>
 </head>
 <body>
+<a class="github-fork-ribbon right-top"
+    href="https://github.com/moniquelive/demoscenetuts"
+    data-ribbon="Fork me on GitHub"
+    title="Fork me on GitHub">Fork me on GitHub</a>
 <div class="container">
   <h1>Tutoriais de Efeitos de Demos</h1>
   <p>
@@ -86,7 +95,8 @@
     {
       effect: "stars", width: "320", height: "200",
       title: "Starfield 2D",
-      description: "Efeito de estrelas em scroll horizontal, com velocidade proporcional a posição do cursor do mouse sobre o canvas."
+      description: "Efeito de estrelas em scroll horizontal, com velocidade proporcional a posição do cursor do mouse sobre o canvas. "+
+        "<a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_02_Introduction_To_Computer_Graphics.shtml'>link para tutorial</a>"
     },
     {
       effect: "3d", width: "320", height: "200",
@@ -96,32 +106,37 @@
     {
       effect: "crossfade", width: "200", height: "320",
       title: "Crossfade",
-      description: "Efeito de transição entre duas imagens, pixel a pixel. Demonstra o uso de interpolação linear."
+      description: "Efeito de transição entre duas imagens, pixel a pixel. Demonstra o uso de interpolação linear. "+
+        "<a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_03_Timer_Related_Issues.shtml'>link para tutorial</a>"
     },
     {
       title: "Plasma", width: "320", height: "200",
       effect: "plasma",
-      description: "Efeito de plasma aplicado sobre imagem, pixel a pixel. Demonstra combinação de pixels manual."
+      description: "Efeito de plasma aplicado sobre imagem, pixel a pixel. Demonstra combinação de pixels manual. "+
+        "<a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_04_Per_Pixel_Control.shtml'>link para tutorial</a>"
     },
     {
       title: "Filter", width: "320", height: "200",
       effect: "filter",
-      description: "Efeito de fogo usando filtros de imagem."
+      description: "Efeito de fogo usando filtros de imagem. "+
+        "<a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_05_Filters.shtml'>link para tutorial</a>"
     },
     {
       effect: "cyber1", width: "320", height: "200",
       title: "Cyber1 / Lerp",
-      description: "Efeito de interpolação linear usando pixels da imagem."
+      description: "Efeito de interpolação linear usando pixels da imagem. <i>Sem link para tutorial pois esse foi da minha cabeça mesmo rsrs</i>"
     },
     {
       effect: "bifilter", width: "320", height: "200",
       title: "Bi-Linear filter",
-      description: "Efeito de mapa de distorção com filtro bilinear (toque/clique na tela para alternar as versões!)"
+      description: "Efeito de mapa de distorção com filtro bilinear (toque/clique na tela para alternar as versões!). "+
+        "<a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_06_Bitmap_Distortion.shtml'>link para tutorial</a>"
     },
     {
       effect: "bump", width: "320", height: "200",
       title: "Bump Map",
-      description: "Efeito de bump map (mapa de 'alturas'), com dois spots de luz se movendo aleatoriamente"
+      description: "Efeito de bump map (mapa de 'alturas'), com dois spots de luz se movendo aleatoriamente. " +
+        "<a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_07_Bump_Mapping.shtml'>link para tutorial</a>"
     }
   ];
   $(document).ready(
