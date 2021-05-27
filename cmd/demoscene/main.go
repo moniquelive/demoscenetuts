@@ -11,6 +11,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/moniquelive/demoscenetuts/internal/bifilter"
+	"github.com/moniquelive/demoscenetuts/internal/bump"
 	"github.com/moniquelive/demoscenetuts/internal/crossfade"
 	"github.com/moniquelive/demoscenetuts/internal/cyber1"
 	"github.com/moniquelive/demoscenetuts/internal/filters"
@@ -46,6 +47,7 @@ func init() {
 	demos["filter"] = &filters.Filter{}
 	demos["cyber1"] = &cyber1.Lerp{}
 	demos["bifilter"] = &bifilter.Bifilter{}
+	demos["bump"] = &bump.Bump{}
 }
 
 func (g *Game) Update() error {
