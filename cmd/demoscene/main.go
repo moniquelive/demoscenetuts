@@ -15,6 +15,7 @@ import (
 	"github.com/moniquelive/demoscenetuts/internal/crossfade"
 	"github.com/moniquelive/demoscenetuts/internal/cyber1"
 	"github.com/moniquelive/demoscenetuts/internal/filters"
+	"github.com/moniquelive/demoscenetuts/internal/mandelbrot"
 	"github.com/moniquelive/demoscenetuts/internal/plasma"
 	"github.com/moniquelive/demoscenetuts/internal/stars"
 	"github.com/moniquelive/demoscenetuts/internal/stars3D"
@@ -48,6 +49,7 @@ func init() {
 	demos["cyber1"] = &cyber1.Lerp{}
 	demos["bifilter"] = &bifilter.Bifilter{}
 	demos["bump"] = &bump.Bump{}
+	demos["mandelbrot"] = &mandelbrot.Mandelbrot{}
 }
 
 func (g *Game) Update() error {
