@@ -18,22 +18,22 @@ type Mandelbrot struct {
 	screenHeight int
 	frameCount   int
 	cm           *image.RGBA
-
-	dr, di, pr, pi, sr, si float64
-	offs                   int
-	zx, zy                 float64
-	zoom                   bool
+	d            complex128
+	p            complex128
+	s            complex128
+	z            complex128
+	offs         int
+	zoom         bool
 }
 
-const or = -0.577816 - 9.31323E-10 - 1.16415E-10
-const oi = -0.631121 - 2.38419E-07 + 1.49012E-08
+const o = complex(-0.577816-9.31323E-10-1.16415E-10, -0.631121-2.38419E-07+1.49012E-08)
 const resx = 320.0
 const resy = 200.0
 
 func (b *Mandelbrot) Draw(buffer *image.RGBA) {
 
 	if b.frameCount%3 == 0 {
-		b.startFrac(or-b.zx, oi-b.zy, or+b.zx, oi+b.zy)
+		b.startFrac(o-b.z, o+b.z)
 		for i := 0; i < resy; i++ {
 			b.computeFrac(b.cm)
 		}
@@ -43,11 +43,9 @@ func (b *Mandelbrot) Draw(buffer *image.RGBA) {
 		b.zoom = !b.zoom
 	}
 	if b.zoom {
-		b.zx *= 0.9
-		b.zy *= 0.9
+		b.z *= 0.9
 	} else {
-		b.zx *= 1.1
-		b.zy *= 1.1
+		b.z *= 1.1
 	}
 	b.frameCount++
 	draw.Draw(buffer, buffer.Bounds(), b.cm, image.Point{}, draw.Src)
@@ -60,20 +58,18 @@ func (b *Mandelbrot) Setup() (int, int, int) {
 	})
 	b.screenWidth = 320
 	b.screenHeight = 200
-	b.zx = 4.0
-	b.zy = 4.0
+	b.z = complex(4, 4)
 	return b.screenWidth, b.screenHeight, 2
 }
 
-func (b *Mandelbrot) startFrac(_sr, _si, er, ei float64) {
+func (b *Mandelbrot) startFrac(_s, e complex128) {
 	// compute deltas for interpolation in complex plane
-	b.dr = (er - _sr) / resx
-	b.di = (ei - _si) / resy
+	b.d = complex(
+		(real(e)-real(_s))/resx,
+		(imag(e)-imag(_s))/resy)
 	// remember start values
-	b.pr = _sr
-	b.pi = _si
-	b.sr = _sr
-	b.si = _si
+	b.p = _s
+	b.s = _s
 	b.offs = 0
 }
 
@@ -88,27 +84,25 @@ func (b Mandelbrot) pal(i byte) [3]byte {
 }
 
 func (b *Mandelbrot) computeFrac(buffer *image.RGBA) {
-	b.pr = b.sr
+	b.p = complex(
+		real(b.s),
+		imag(b.p))
 	for i := 0; i < resx; i++ {
 		c := byte(0)
-		vi := b.pi
-		vr := b.pr
-		nvi := 0.0
-		nvr := 0.0
+		v := b.p
+		var nv complex128
 		// loop until distance is above 2, or counter hits limit
-		for (vr*vr+vi*vi < 4) && (c < 255) {
+		for (real(v)*real(v)+imag(v)*imag(v) < 4) && (c < 255) {
 			// Z(0) = C
 			// Z(n+1) = Z(n)^2 + C      (1)
+
 			// compute Z(n+1) given Z(n)
-			nvr = vr*vr - vi*vi + b.pr
-			nvi = 2*vi*vr + b.pi
+			nv = complex(
+				real(v)*real(v)-imag(v)*imag(v)+real(b.p),
+				2*real(v)*imag(v)+imag(b.p))
 
-			// that becomes Z(n)
-			vi = nvi
-			vr = nvr
-
-			// increment counter
-			c++
+			v = nv // that becomes Z(n)
+			c++    // increment counter
 		}
 		// store colour
 		p := b.pal(c)
@@ -118,8 +112,12 @@ func (b *Mandelbrot) computeFrac(buffer *image.RGBA) {
 		buffer.Pix[b.offs*4+3] = 255
 		b.offs++
 		// interpolate X
-		b.pr += b.dr
+		b.p = complex(
+			real(b.p)+real(b.d),
+			imag(b.p))
 	}
 	// interpolate Y
-	b.pi += b.di
+	b.p = complex(
+		real(b.p),
+		imag(b.p)+imag(b.d))
 }
