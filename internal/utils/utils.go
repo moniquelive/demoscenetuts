@@ -80,6 +80,17 @@ func LoadBufferGray(b []byte) *image.Gray {
 	return gray
 }
 
+func LoadBufferPaletted(b []byte) *image.Paletted {
+	img, _, err := image.Decode(bytes.NewReader(b))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	pal := image.NewPaletted(img.Bounds(), img.ColorModel().(color.Palette))
+	draw.Draw(pal, pal.Bounds(), img, image.Point{}, draw.Src)
+	return pal
+}
+
 func Lerp(a, b, k float64) float64 {
 	return a + (b-a)*k //easeInOutBack(k)
 }

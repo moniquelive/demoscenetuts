@@ -19,6 +19,7 @@ import (
 	"github.com/moniquelive/demoscenetuts/internal/plasma"
 	"github.com/moniquelive/demoscenetuts/internal/stars"
 	"github.com/moniquelive/demoscenetuts/internal/stars3D"
+	"github.com/moniquelive/demoscenetuts/internal/textmap"
 )
 
 var (
@@ -50,6 +51,7 @@ func init() {
 	demos["bifilter"] = &bifilter.Bifilter{}
 	demos["bump"] = &bump.Bump{}
 	demos["mandelbrot"] = &mandelbrot.Mandelbrot{}
+	demos["textmap"] = &textmap.Textmap{}
 }
 
 func (g *Game) Update() error {
