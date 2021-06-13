@@ -10,16 +10,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-	"github.com/moniquelive/demoscenetuts/internal/bifilter"
-	"github.com/moniquelive/demoscenetuts/internal/bump"
-	"github.com/moniquelive/demoscenetuts/internal/crossfade"
-	"github.com/moniquelive/demoscenetuts/internal/cyber1"
-	"github.com/moniquelive/demoscenetuts/internal/filters"
-	"github.com/moniquelive/demoscenetuts/internal/mandelbrot"
-	"github.com/moniquelive/demoscenetuts/internal/plasma"
-	"github.com/moniquelive/demoscenetuts/internal/stars"
-	"github.com/moniquelive/demoscenetuts/internal/stars3D"
-	"github.com/moniquelive/demoscenetuts/internal/textmap"
+	"github.com/moniquelive/demoscenetuts/internal"
 )
 
 var (
@@ -27,31 +18,16 @@ var (
 	ScreenHeight = 200
 )
 
-type demo interface {
-	Draw(*image.RGBA)
-	Setup() (int, int, int)
-}
-
-var d demo
-
 type Game struct {
 	doubleBuffer *image.RGBA
 }
 
-var demos map[string]demo
+var currentDemo demos.Demo
+
+var demosMap map[string]demos.Demo
 
 func init() {
-	demos = make(map[string]demo)
-	demos["stars"] = &stars.Stars{}
-	demos["3d"] = &stars3D.Stars{}
-	demos["crossfade"] = &crossfade.Cross{}
-	demos["plasma"] = &plasma.Plasma{}
-	demos["filter"] = &filters.Filter{}
-	demos["cyber1"] = &cyber1.Lerp{}
-	demos["bifilter"] = &bifilter.Bifilter{}
-	demos["bump"] = &bump.Bump{}
-	demos["mandelbrot"] = &mandelbrot.Mandelbrot{}
-	demos["textmap"] = &textmap.Textmap{}
+	demosMap = demos.FillDemos()
 }
 
 func (g *Game) Update() error {
@@ -62,7 +38,7 @@ func (g *Game) Update() error {
 		g.doubleBuffer, g.doubleBuffer.Bounds(),
 		image.Black, image.Black.Bounds().Min,
 		draw.Src)
-	d.Draw(g.doubleBuffer)
+	currentDemo.Draw(g.doubleBuffer)
 	return nil
 }
 
@@ -81,13 +57,13 @@ func main() {
 		return
 	}
 	var ok bool
-	if d, ok = demos[os.Args[1]]; !ok {
+	if currentDemo, ok = demosMap[os.Args[1]]; !ok {
 		log.Printf("Demo não encontrado: %q\n", os.Args[1])
 		help()
 		return
 	}
 	zoom := 1
-	ScreenWidth, ScreenHeight, zoom = d.Setup()
+	ScreenWidth, ScreenHeight, zoom = currentDemo.Setup()
 	ebiten.SetWindowSize(ScreenWidth*zoom, ScreenHeight*zoom)
 	ebiten.SetWindowTitle("Ebiten Demoscene")
 	g := &Game{
@@ -99,8 +75,8 @@ func main() {
 }
 
 func help() {
-	demosList := make([]string, 0, len(demos))
-	for k := range demos {
+	demosList := make([]string, 0, len(demosMap))
+	for k := range demosMap {
 		demosList = append(demosList, k)
 	}
 	log.Println("Escolha o demo: [", strings.Join(demosList, ", "), "]")
