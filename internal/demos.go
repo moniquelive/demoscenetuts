@@ -9,6 +9,7 @@ import (
 	"github.com/moniquelive/demoscenetuts/internal/cyber1"
 	"github.com/moniquelive/demoscenetuts/internal/filters"
 	"github.com/moniquelive/demoscenetuts/internal/mandelbrot"
+	"github.com/moniquelive/demoscenetuts/internal/particles"
 	"github.com/moniquelive/demoscenetuts/internal/plasma"
 	"github.com/moniquelive/demoscenetuts/internal/rotozoom"
 	"github.com/moniquelive/demoscenetuts/internal/stars"
@@ -34,6 +35,7 @@ func FillDemos() map[string]Demo {
 	m["mandelbrot"] = &mandelbrot.Mandelbrot{}
 	m["textmap"] = &textmap.Textmap{}
 	m["rotozoom"] = &rotozoom.Rotozoom{}
+	m["particles"] = &particles.Particles{}
 	return m
 }
 
