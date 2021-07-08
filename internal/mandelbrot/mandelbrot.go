@@ -52,12 +52,9 @@ func (b *Mandelbrot) Draw(buffer *image.RGBA) {
 }
 
 func (b *Mandelbrot) Setup() (int, int, int) {
-	b.cm = image.NewRGBA(image.Rectangle{
-		Min: image.Point{X: 0, Y: 0},
-		Max: image.Point{X: 320, Y: 200},
-	})
 	b.screenWidth = 320
 	b.screenHeight = 200
+	b.cm = image.NewRGBA(image.Rect(0, 0, b.screenWidth, b.screenHeight))
 	b.z = complex(4, 4)
 	return b.screenWidth, b.screenHeight, 2
 }
@@ -77,9 +74,9 @@ func (b Mandelbrot) pal(i byte) [3]byte {
 	fi := float64(i)
 	ffc := float64(b.frameCount)
 	return [3]byte{
-		byte(utils.Constrain(127.0-128.0*math.Cos(fi*math.Pi/128.0+ffc*0.0041), 0, 255)),
-		byte(utils.Constrain(127.0-128.0*math.Cos(fi*math.Pi/128.0+ffc*0.00141), 0, 255)),
-		byte(utils.Constrain(127.0-128.0*math.Cos(fi*math.Pi/64.0+ffc*0.00136), 0, 255)),
+		byte(utils.Constrain(128.0-127.0*math.Cos(fi*math.Pi/128.0+ffc*0.0041), 0, 255)),
+		byte(utils.Constrain(128.0-127.0*math.Cos(fi*math.Pi/128.0+ffc*0.00141), 0, 255)),
+		byte(utils.Constrain(128.0-127.0*math.Cos(fi*math.Pi/64.0+ffc*0.00136), 0, 255)),
 	}
 }
 

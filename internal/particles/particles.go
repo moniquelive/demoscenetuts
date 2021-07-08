@@ -51,22 +51,22 @@ func (r *Particles) Draw(buffer *image.RGBA) {
 	}
 	// calculate a new colour
 	k := float64(len(r.pts))
-	cr := int(32.0 + 31.0*math.Cos(k*math.Pi/256.0+currentTime/74.0))
-	cg := int(32.0 + 31.0*math.Cos(k*math.Pi/256.0+currentTime/63.0))
-	cb := int(32.0 + 31.0*math.Cos(k*math.Pi/256.0+currentTime/81.0))
+	cr := int(128.0 + 127.0*math.Cos(k*math.Pi/256.0+currentTime/74.0))
+	cg := int(128.0 + 127.0*math.Cos(k*math.Pi/256.0+currentTime/63.0))
+	cb := int(128.0 + 127.0*math.Cos(k*math.Pi/256.0+currentTime/81.0))
 	// fade palette from black (0) to colour (128) to white (255)
 	for i := 0; i < 128; i++ {
 		r.colorTable[i][0] = byte(cr * i / 128)
 		r.colorTable[i][1] = byte(cg * i / 128)
 		r.colorTable[i][2] = byte(cb * i / 128)
-		r.colorTable[128+i][0] = byte(cr + (63-cr)*i/128)
-		r.colorTable[128+i][1] = byte(cg + (63-cg)*i/128)
-		r.colorTable[128+i][2] = byte(cb + (63-cb)*i/128)
+		r.colorTable[128+i][0] = byte(cr + (255-cr)*i/128)
+		r.colorTable[128+i][1] = byte(cg + (255-cg)*i/128)
+		r.colorTable[128+i][2] = byte(cb + (255-cb)*i/128)
 	}
 	for i, index := range r.page2 {
-		buffer.Pix[i*4+0] = 4*r.colorTable[index][0]
-		buffer.Pix[i*4+1] = 4*r.colorTable[index][1]
-		buffer.Pix[i*4+2] = 4*r.colorTable[index][2]
+		buffer.Pix[i*4+0] = r.colorTable[index][0]
+		buffer.Pix[i*4+1] = r.colorTable[index][1]
+		buffer.Pix[i*4+2] = r.colorTable[index][2]
 		//buffer.Pix[i*4+3] = 255
 	}
 	r.frameCount++
@@ -77,9 +77,9 @@ func (r *Particles) Setup() (int, int, int) {
 	r.screenHeight = 200
 
 	for i := 0; i < 256; i++ {
-		r.colorTable[i][0] = byte(i >> 2)
-		r.colorTable[i][1] = byte(i >> 2)
-		r.colorTable[i][2] = byte(i >> 2)
+		r.colorTable[i][0] = byte(i)
+		r.colorTable[i][1] = byte(i)
+		r.colorTable[i][2] = byte(i)
 	}
 
 	for i := 0; i < len(r.pts); i++ {

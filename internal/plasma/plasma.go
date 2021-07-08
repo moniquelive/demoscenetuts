@@ -30,14 +30,12 @@ func (c *Plasma) Draw(buffer *image.RGBA) {
 
 func (c *Plasma) Setup() (int, int, int) {
 	c.bg = utils.LoadBufferRGBA(bgBytes)
-	bgw := c.bg.Bounds().Dx()
-	bgh := c.bg.Bounds().Dy()
+	c.screenWidth = c.bg.Bounds().Dx()
+	c.screenHeight = c.bg.Bounds().Dy()
 
-	doubleBounds := image.Rect(0, 0, bgw*2, bgh*2)
+	doubleBounds := image.Rect(0, 0, c.screenWidth*2, c.screenHeight*2)
 	c.plasma1 = image.NewRGBA(doubleBounds)
 	c.plasma2 = image.NewRGBA(doubleBounds)
-	c.screenWidth = bgw
-	c.screenHeight = bgh
 	c.plasma()
 	return c.screenWidth, c.screenHeight, 2
 }
@@ -48,14 +46,14 @@ func (c Plasma) f1(i, j int) uint8 {
 	jj := float64(j)
 	ww := float64(c.screenWidth)
 	hh := float64(c.screenHeight)
-	return 64 + uint8(63*(math.Sin(math.Hypot(hh-jj, ww-ii)/16.0)))
+	return 128 + uint8(127*(math.Sin(math.Hypot(hh-jj, ww-ii)/16.0)))
 }
 
 func (c Plasma) f2(i, j int) uint8 {
 	// 64 + 63 * sin( i/(37+15*cos(j/74)) ) * cos( j/(31+11*sin(i/57))) )
 	ii := float64(i)
 	jj := float64(j)
-	return uint8(64.0 + 63.0*math.Sin(ii/(37.0+15.0*math.Cos(jj/74.0)))*math.Cos(jj/(31.0+11.0*math.Sin(ii/57.0))))
+	return 128 + uint8(127.0*math.Sin(ii/(37.0+15.0*math.Cos(jj/74.0)))*math.Cos(jj/(31.0+11.0*math.Sin(ii/57.0))))
 }
 
 func (c Plasma) plasma() {
@@ -104,10 +102,9 @@ func (c *Plasma) update(r *image.RGBA) {
 				r.Pix[loc+rgb] = uint8(
 					utils.ConstrainU32(
 						uint32(c.bg.Pix[loc+rgb])+
-							uint32(c.plasma1.Pix[src1+rgb])>>2+
-							uint32(c.plasma2.Pix[src2+rgb])>>2+
-							uint32(c.plasma2.Pix[src3+rgb])>>2,
-						0, 255))
+							uint32(c.plasma1.Pix[src1+rgb])>>3+
+							uint32(c.plasma2.Pix[src2+rgb])>>3+
+							uint32(c.plasma2.Pix[src3+rgb])>>3, 0, 255))
 			}
 			loc += 4
 			src1 += 4
