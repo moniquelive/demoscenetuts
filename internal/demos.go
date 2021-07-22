@@ -11,6 +11,7 @@ import (
 	"github.com/moniquelive/demoscenetuts/internal/mandelbrot"
 	"github.com/moniquelive/demoscenetuts/internal/particles"
 	"github.com/moniquelive/demoscenetuts/internal/plasma"
+	"github.com/moniquelive/demoscenetuts/internal/polygon"
 	"github.com/moniquelive/demoscenetuts/internal/rotozoom"
 	"github.com/moniquelive/demoscenetuts/internal/span"
 	"github.com/moniquelive/demoscenetuts/internal/stars"
@@ -38,6 +39,7 @@ func FillDemos() map[string]Demo {
 	m["rotozoom"] = &rotozoom.Rotozoom{}
 	m["particles"] = &particles.Particles{}
 	m["span"] = &span.Span{}
+	m["polygon"] = &polygon.Polygon{}
 	return m
 }
 
