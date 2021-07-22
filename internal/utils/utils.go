@@ -94,3 +94,11 @@ func LoadBufferPaletted(b []byte) *image.Paletted {
 func Lerp(a, b, k float64) float64 {
 	return a + (b-a)*k //easeInOutBack(k)
 }
+
+func Memset(a *[64000]uint16, v uint16) {
+	a[0] = v
+	for bp := 1; bp < len(a); bp *= 2 {
+		copy(a[bp:], a[:bp])
+	}
+}
+

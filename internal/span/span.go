@@ -38,16 +38,9 @@ type Span struct {
 	nrm          [200][SPANS]XZ
 }
 
-func memset(a *[64000]uint16, v uint16) {
-	a[0] = v
-	for bp := 1; bp < len(a); bp *= 2 {
-		copy(a[bp:], a[:bp])
-	}
-}
-
 func (s *Span) Draw(buffer *image.RGBA) {
 	// clear the zbuffer
-	memset(&s.zbuffer, 0xffff)
+	utils.Memset(&s.zbuffer, 0xffff)
 	// draw all slices
 	fc := float64(s.frameCount) * 1e4
 	for i := 0; i < 200; i++ {
