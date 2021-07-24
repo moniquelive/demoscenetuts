@@ -9022,8 +9022,8 @@ var $author$project$Main$singleEffect = function (e) {
 									[
 										$elm$html$Html$Attributes$type_('button'),
 										$elm$html$Html$Attributes$class('btn btn-primary'),
-										A2($elm$html$Html$Attributes$attribute, 'data-toggle', 'modal'),
-										A2($elm$html$Html$Attributes$attribute, 'data-target', '#iframeModal'),
+										A2($elm$html$Html$Attributes$attribute, 'data-bs-toggle', 'modal'),
+										A2($elm$html$Html$Attributes$attribute, 'data-bs-target', '#iframeModal'),
 										A2($elm$html$Html$Attributes$attribute, 'data-effect', e.k),
 										A2(
 										$elm$html$Html$Attributes$attribute,

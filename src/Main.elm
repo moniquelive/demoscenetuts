@@ -239,8 +239,8 @@ singleEffect e =
                 , button
                     [ type_ "button"
                     , class "btn btn-primary"
-                    , attribute "data-toggle" "modal"
-                    , attribute "data-target" "#iframeModal"
+                    , attribute "data-bs-toggle" "modal"
+                    , attribute "data-bs-target" "#iframeModal"
                     , attribute "data-effect" e.effect
                     , attribute "data-width" (String.fromInt e.width)
                     , attribute "data-height" (String.fromInt e.height)
