@@ -3,8 +3,6 @@ module Main exposing (..)
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Parser
-import Html.Parser.Util
 
 
 
@@ -32,6 +30,7 @@ type alias Effect =
     , title : String
     , code : String
     , description : String
+    , tutorialLink : String
     }
 
 
@@ -41,152 +40,104 @@ type alias Model =
 
 init : flags -> ( Model, Cmd Msg )
 init _ =
-    ( [ { effect = "stars"
-        , width = 320
-        , height = 200
-        , title = "Starfield 2D"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/stars/stars.go"
-        , description =
-            """
-      Efeito de estrelas em scroll horizontal, com velocidade proporcional a posição do cursor do mouse sobre o canvas.
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_02_Introduction_To_Computer_Graphics.shtml'>link para tutorial</a>
-      """
-        }
-      , { effect = "3d"
-        , width = 320
-        , height = 200
-        , title = "Starfield 3D"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/stars3D/stars3D.go"
-        , description = "Efeito de estrelas em movimentação 3D."
-        }
-      , { effect = "crossfade"
-        , width = 200
-        , height = 320
-        , title = "Crossfade"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/crossfade/crossfade.go"
-        , description =
-            """
-      Efeito de transição entre duas imagens, pixel a pixel. Demonstra o uso de interpolação linear.
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_03_Timer_Related_Issues.shtml'>link para tutorial</a>
-      """
-        }
-      , { effect = "plasma"
-        , width = 320
-        , height = 200
-        , title = "Plasma"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/plasma/plasma.go"
-        , description =
-            """
-      Efeito de plasma aplicado sobre imagem, pixel a pixel. Demonstra combinação de pixels manual.
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_04_Per_Pixel_Control.shtml'>link para tutorial</a>
-      """
-        }
-      , { effect = "filter"
-        , width = 320
-        , height = 200
-        , title = "Filter"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/filters/filters.go"
-        , description =
-            """
-      Efeito de fogo usando filtros de imagem.
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_05_Filters.shtml'>link para tutorial</a>
-      """
-        }
-      , { effect = "cyber1"
-        , width = 320
-        , height = 200
-        , title = "Cyber1 / Lerp"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/cyber1/cyber1.go"
-        , description = "Efeito de interpolação linear usando pixels da imagem. <i>Sem link para tutorial pois esse foi da minha cabeça mesmo rsrs</i>"
-        }
-      , { effect = "bifilter"
-        , width = 320
-        , height = 200
-        , title = "Bi-Linear filter"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/bifilter/bifilter.go"
-        , description =
-            """
-      Efeito de mapa de distorção com filtro bilinear (toque/clique na tela para alternar as versões!).
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_06_Bitmap_Distortion.shtml'>link para tutorial</a>
-      """
-        }
-      , { effect = "bump"
-        , width = 320
-        , height = 200
-        , title = "Bump Map"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/bump/bump.go"
-        , description =
-            """
-      Efeito de bump map (mapa de 'alturas'), com dois spots de luz se movendo aleatoriamente.
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_07_Bump_Mapping.shtml'>link para tutorial</a>
-      """
-        }
-      , { effect = "mandelbrot"
-        , width = 320
-        , height = 200
-        , title = "Zoom Fractal"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/mandelbrot/mandelbrot.go"
-        , description =
-            """
-      Efeito de zoom fractal que desenha o conjunto Mandelbrot dando zoom in & out
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_08_Fractal_Zooming.shtml'>link para tutorial</a>
-      """
-        }
-      , { effect = "textmap"
-        , width = 320
-        , height = 200
-        , title = "Textura Mapeada"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/textmap/textmap.go"
-        , description =
-            """
-      Efeito de textura mapeada animada (du,dv)
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_09_Static_Texture_Mapping.shtml'>link para tutorial</a>
-      """
-        }
-      , { effect = "rotozoom"
-        , width = 320
-        , height = 200
-        , title = "Roto Zoom"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/rotozoom/rotozoom.go"
-        , description =
-            """
-      Efeito rotação e zoom
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_10_Roto-Zooming.shtml'>link para tutorial</a>
-      """
-        }
-      , { effect = "particles"
-        , width = 320
-        , height = 200
-        , title = "Particles"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/particles/particles.go"
-        , description =
-            """
-      Efeito Rastro
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_11_Particle_Systems.shtml'>link para tutorial</a>
-      """
-        }
-      , { effect = "span"
-        , width = 320
-        , height = 200
-        , title = "Span"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/span/span.go"
-        , description =
-            """
-      Efeito Span Based Rendering
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_12_Span_Based_Rendering.shtml'>link para tutorial</a>
-      """
-        }
-      , { effect = "polygon"
-        , width = 320
-        , height = 200
-        , title = "Polygon Engines"
-        , code = "https://github.com/moniquelive/demoscenetuts/blob/main/internal/polygon/polygon.go"
-        , description =
-            """
-      Efeito Polygon Engines (rotating donut)
-      <a href='https://www.flipcode.com/archives/The_Art_of_Demomaking-Issue_13_Polygon_Engines.shtml'>link para tutorial</a>
-      """
-        }
+    ( [ Effect "stars"
+            320
+            200
+            "Starfield 2D"
+            "stars/stars.go"
+            "Efeito de estrelas em scroll horizontal, com velocidade proporcional a posição do cursor do mouse sobre o canvas."
+            "Issue_02_Introduction_To_Computer_Graphics.shtml"
+      , Effect "3d"
+            320
+            200
+            "Starfield 3D"
+            "stars3D/stars3D.go"
+            "Efeito de estrelas em movimentação 3D."
+            ""
+      , Effect "crossfade"
+            200
+            320
+            "Crossfade"
+            "crossfade/crossfade.go"
+            "Efeito de transição entre duas imagens, pixel a pixel. Demonstra o uso de interpolação linear."
+            "Issue_03_Timer_Related_Issues.shtml"
+      , Effect "plasma"
+            320
+            200
+            "Plasma"
+            "plasma/plasma.go"
+            "Efeito de plasma aplicado sobre imagem, pixel a pixel. Demonstra combinação de pixels manual."
+            "Issue_04_Per_Pixel_Control.shtml"
+      , Effect "filter"
+            320
+            200
+            "Filter"
+            "filters/filters.go"
+            "Efeito de fogo usando filtros de imagem."
+            "Issue_05_Filters.shtml"
+      , Effect "cyber1"
+            320
+            200
+            "Cyber1 / Lerp"
+            "cyber1/cyber1.go"
+            "Efeito de interpolação linear usando pixels da imagem. (sem link para tutorial pois esse foi da minha cabeça mesmo rsrs)"
+            ""
+      , Effect "bifilter"
+            320
+            200
+            "Bi-Linear filter"
+            "bifilter/bifilter.go"
+            "Efeito de mapa de distorção com filtro bilinear (toque/clique na tela para alternar as versões!)."
+            "Issue_06_Bitmap_Distortion.shtml"
+      , Effect "bump"
+            320
+            200
+            "Bump Map"
+            "bump/bump.go"
+            "Efeito de bump map (mapa de 'alturas'), com dois spots de luz se movendo aleatoriamente."
+            "Issue_07_Bump_Mapping.shtml"
+      , Effect "mandelbrot"
+            320
+            200
+            "Zoom Fractal"
+            "mandelbrot/mandelbrot.go"
+            "Efeito de zoom fractal que desenha o conjunto Mandelbrot dando zoom in & out"
+            "Issue_08_Fractal_Zooming.shtml"
+      , Effect "textmap"
+            320
+            200
+            "Textura Mapeada"
+            "textmap/textmap.go"
+            "Efeito de textura mapeada animada (du,dv)"
+            "Issue_09_Static_Texture_Mapping.shtml"
+      , Effect "rotozoom"
+            320
+            200
+            "Roto Zoom"
+            "rotozoom/rotozoom.go"
+            "Efeito rotação e zoom"
+            "Issue_10_Roto-Zooming.shtml"
+      , Effect "particles"
+            320
+            200
+            "Particles"
+            "particles/particles.go"
+            "Efeito Rastro"
+            "Issue_11_Particle_Systems.shtml"
+      , Effect "span"
+            320
+            200
+            "Span"
+            "span/span.go"
+            "Efeito Span Based Rendering"
+            "Issue_12_Span_Based_Rendering.shtml"
+      , Effect "polygon"
+            320
+            200
+            "Polygon Engines"
+            "polygon/polygon.go"
+            "Efeito Polygon Engines (rotating donut)"
+            "Issue_13_Polygon_Engines.shtml"
       ]
     , Cmd.none
     )
@@ -218,23 +169,16 @@ subscriptions _ =
 -- VIEW
 
 
-textHtml : String -> List (Html.Html msg)
-textHtml t =
-    case Html.Parser.run t of
-        Ok nodes ->
-            Html.Parser.Util.toVirtualDom nodes
-
-        Err _ ->
-            []
-
-
 singleEffect : Effect -> Html Msg
 singleEffect e =
     div [ class "flex-shrink-0 p-sm-2 w-50" ]
         [ div [ class "card" ]
             [ div [ class "card-header d-flex justify-content-between align-items-center" ]
                 [ text e.title
-                , a [ href e.code, target "_blank" ]
+                , a
+                    [ href ("https://github.com/moniquelive/demoscenetuts/blob/main/internal/" ++ e.code)
+                    , target "_blank"
+                    ]
                     [ text "src" ]
                 , button
                     [ type_ "button"
@@ -248,7 +192,16 @@ singleEffect e =
                     [ text "Exibir Efeito" ]
                 ]
             , div [ class "card-body" ]
-                [ p [ class "card-text" ] (textHtml e.description) ]
+                [ p [ class "card-text" ]
+                    [ text (e.description ++ " ")
+                    , if String.isEmpty e.tutorialLink then
+                        text ""
+
+                      else
+                        a [ href ("https://www.flipcode.com/archives/The_Art_of_Demomaking-" ++ e.tutorialLink) ]
+                            [ text "link para o tutorial" ]
+                    ]
+                ]
             ]
         ]
 
