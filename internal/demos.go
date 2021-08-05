@@ -10,6 +10,7 @@ import (
 	"github.com/moniquelive/demoscenetuts/internal/filters"
 	"github.com/moniquelive/demoscenetuts/internal/mandelbrot"
 	"github.com/moniquelive/demoscenetuts/internal/particles"
+	"github.com/moniquelive/demoscenetuts/internal/plane"
 	"github.com/moniquelive/demoscenetuts/internal/plasma"
 	"github.com/moniquelive/demoscenetuts/internal/polygon"
 	"github.com/moniquelive/demoscenetuts/internal/rotozoom"
@@ -40,6 +41,7 @@ func FillDemos() map[string]Demo {
 	m["particles"] = &particles.Particles{}
 	m["span"] = &span.Span{}
 	m["polygon"] = &polygon.Polygon{}
+	m["plane"] = &plane.Plane{}
 	return m
 }
 
