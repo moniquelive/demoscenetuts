@@ -138,6 +138,13 @@ init _ =
             "polygon/polygon.go"
             "Efeito Polygon Engines (rotating donut)"
             "Issue_13_Polygon_Engines.shtml"
+      , Effect "plane"
+            320
+            200
+            "Perspective Correct Texture Mapping"
+            "plane/plane.go"
+            "Efeito mapeamento de textura com perspectiva correta"
+            "Issue_14_Perspective_Correct_Texture_Mapping.shtml"
       ]
     , Cmd.none
     )
