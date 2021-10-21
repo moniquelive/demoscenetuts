@@ -187,6 +187,17 @@ singleEffect e =
                     , target "_blank"
                     ]
                     [ text "src" ]
+                , a
+                    [ href
+                        ("https://demoscenetuts.monique.dev/player.html?effect="
+                            ++ e.effect
+                            ++ "&layer-name=DemoTuts"
+                            ++ e.effect
+                            ++ "&layer-width=1920&layer-height=1080"
+                        )
+                    , target "_blank"
+                    ]
+                    [ text "obs" ]
                 , button
                     [ type_ "button"
                     , class "btn btn-primary"
