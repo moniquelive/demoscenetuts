@@ -62,7 +62,7 @@ func main() {
 		help()
 		return
 	}
-	zoom := 1
+	var zoom int
 	ScreenWidth, ScreenHeight, zoom = currentDemo.Setup()
 	ebiten.SetWindowSize(ScreenWidth*zoom, ScreenHeight*zoom)
 	ebiten.SetWindowTitle("Ebiten Demoscene")
@@ -80,5 +80,4 @@ func help() {
 		demosList = append(demosList, k)
 	}
 	log.Println("Escolha o demo: [", strings.Join(demosList, ", "), "]")
-	return
 }

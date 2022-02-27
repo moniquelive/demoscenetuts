@@ -4,7 +4,6 @@ import (
 	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/moniquelive/demoscenetuts/internal/rand"
 	"github.com/moniquelive/demoscenetuts/internal/utils"
 )
 
@@ -25,9 +24,9 @@ func NewStar(screenWidth, screenHeight int) *Star {
 	return &Star{
 		screenWidth:  screenWidth,
 		screenHeight: screenHeight,
-		x:            float64(rand.Between(0, screenWidth)),
-		y:            float64(rand.Between(0, screenHeight)),
-		p:            float64(rand.Between(0, maxPlanes)),
+		x:            float64(utils.Between(0, screenWidth)),
+		y:            float64(utils.Between(0, screenHeight)),
+		p:            float64(utils.Between(0, maxPlanes)),
 	}
 }
 
@@ -36,7 +35,7 @@ func (s *Star) Update() {
 	s.x += (1 + s.p) * xVel
 	if s.x >= float64(s.screenWidth) {
 		s.x = 0
-		s.y = float64(rand.Between(0, s.screenHeight))
+		s.y = float64(utils.Between(0, s.screenHeight))
 	}
 }
 

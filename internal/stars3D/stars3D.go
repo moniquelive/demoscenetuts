@@ -3,7 +3,7 @@ package stars3D
 import (
 	"image"
 
-	"github.com/moniquelive/demoscenetuts/internal/rand"
+	"github.com/moniquelive/demoscenetuts/internal/utils"
 )
 
 const maxStars = 500
@@ -15,9 +15,9 @@ type Star struct {
 }
 
 func NewStar(screenWidth, screenHeight int) *Star {
-	x := rand.Between(-screenWidth/2, screenWidth/2)
-	y := rand.Between(-screenHeight/2, screenHeight/2)
-	z := rand.Between(1, screenWidth)
+	x := utils.Between(-screenWidth/2, screenWidth/2)
+	y := utils.Between(-screenHeight/2, screenHeight/2)
+	z := utils.Between(1, screenWidth)
 	return &Star{
 		screenWidth:  screenWidth,
 		screenHeight: screenHeight,
@@ -30,8 +30,8 @@ func NewStar(screenWidth, screenHeight int) *Star {
 func (s *Star) Update() {
 	s.z -= 1
 	if s.z < 1 {
-		s.x = rand.Between(-s.screenWidth/2, s.screenWidth/2)
-		s.y = rand.Between(-s.screenHeight/2, s.screenHeight/2)
+		s.x = utils.Between(-s.screenWidth/2, s.screenWidth/2)
+		s.y = utils.Between(-s.screenHeight/2, s.screenHeight/2)
 		s.z = s.screenWidth
 	}
 }

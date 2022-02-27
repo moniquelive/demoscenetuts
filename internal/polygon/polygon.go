@@ -27,7 +27,7 @@ type Poly struct {
 	p              [4]int
 	tx             [4]int
 	ty             [4]int
-	normal, centre Vector
+	normal, centre utils.Vector
 }
 
 type Polygon struct {
@@ -39,12 +39,12 @@ type Polygon struct {
 	zbuffer      [64000]uint16
 	lut          [65536]byte
 	org, cur     struct {
-		normals  [SLICES * SPANS]Vector
-		vertices [SLICES * SPANS]Vector
+		normals  [SLICES * SPANS]utils.Vector
+		vertices [SLICES * SPANS]utils.Vector
 	}
 	polies               [SPANS * SLICES]Poly
-	objrot               Matrix
-	objpos               Vector
+	objrot               utils.Matrix
+	objpos               utils.Vector
 	edge_table           [200][2]edge_data
 	poly_minY, poly_maxY int
 }
@@ -56,11 +56,11 @@ func (p *Polygon) Draw(buffer *image.RGBA) {
 	// clear the background
 	// set the torus' rotation
 	p.objrot =
-		rotX(currentTime/1124548.0 + math.Pi*math.Cos(currentTime/2234117.0)).
-			MulMat(rotY(currentTime/1345179.0 + math.Pi*math.Sin(currentTime/2614789.0))).
-			MulMat(rotZ(currentTime/1515713.0 - math.Pi*math.Cos(currentTime/2421376.0)))
+		utils.RotX(currentTime/1124548.0 + math.Pi*math.Cos(currentTime/2234117.0)).
+			MulMat(utils.RotY(currentTime/1345179.0 + math.Pi*math.Sin(currentTime/2614789.0))).
+			MulMat(utils.RotZ(currentTime/1515713.0 - math.Pi*math.Cos(currentTime/2421376.0)))
 	// and it's position
-	p.objpos = NewVector(
+	p.objpos = utils.NewVector(
 		48*math.Cos(currentTime/1266398.0),
 		48*math.Sin(currentTime/1424781.0),
 		200+80*math.Sin(currentTime/1912378.0))
@@ -95,7 +95,7 @@ func (p *Polygon) Setup() (int, int, int) {
 }
 
 func (p *Polygon) drawPolies(buffer *image.RGBA) {
-	for n := 0; n < SPANS * SLICES; n++ {
+	for n := 0; n < SPANS*SLICES; n++ {
 		// rotate the centre and normal of the poly to check if it is actually visible.
 		ncent := p.objrot.MulVec(p.polies[n].centre)
 		nnorm := p.objrot.MulVec(p.polies[n].normal)
@@ -155,14 +155,14 @@ func (p *Polygon) initObject() {
 			int_angle := float64(j) * math.Pi * 2.0 / SPANS
 			int_rad := EXT_RADIUS + INT_RADIUS*math.Cos(int_angle)
 			// compute position of vertex by rotating it round C1
-			p.org.vertices[k] = NewVector(
+			p.org.vertices[k] = utils.NewVector(
 				int_rad*ca,
 				INT_RADIUS*math.Sin(int_angle),
 				int_rad*sa)
 			// then find the normal, i.e. the normalised vector representing the
 			// distance to the correpsonding point on C1
 			p.org.normals[k] = (p.org.vertices[k].
-				Sub(NewVector(EXT_RADIUS*ca, 0, EXT_RADIUS*sa))).normalize()
+				Sub(utils.NewVector(EXT_RADIUS*ca, 0, EXT_RADIUS*sa))).Normalize()
 			k++
 		}
 	}
@@ -192,14 +192,14 @@ func (p *Polygon) initObject() {
 			P.ty[2] = ((j + 1) * 512 / SPANS) << 16
 
 			// get the normalized diagonals
-			d1 := p.org.vertices[P.p[2]].Sub(p.org.vertices[P.p[0]]).normalize()
-			d2 := p.org.vertices[P.p[3]].Sub(p.org.vertices[P.p[1]]).normalize()
+			d1 := p.org.vertices[P.p[2]].Sub(p.org.vertices[P.p[0]]).Normalize()
+			d2 := p.org.vertices[P.p[3]].Sub(p.org.vertices[P.p[1]]).Normalize()
 			// and their dot product
-			temp := NewVector(d1[1]*d2[2]-d1[2]*d2[1],
+			temp := utils.NewVector(d1[1]*d2[2]-d1[2]*d2[1],
 				d1[2]*d2[0]-d1[0]*d2[2],
 				d1[0]*d2[1]-d1[1]*d2[0])
 			// normalize that and we get the face's normal
-			P.normal = temp.normalize()
+			P.normal = temp.Normalize()
 
 			// the centre of the face is just the average of the 4 corners
 			// we could use this for depth sorting
@@ -207,7 +207,7 @@ func (p *Polygon) initObject() {
 				Add(p.org.vertices[P.p[1]]).
 				Add(p.org.vertices[P.p[2]]).
 				Add(p.org.vertices[P.p[3]])
-			P.centre = NewVector(temp[0]*0.25, temp[1]*0.25, temp[2]*0.25)
+			P.centre = utils.NewVector(temp[0]*0.25, temp[1]*0.25, temp[2]*0.25)
 		}
 	}
 }

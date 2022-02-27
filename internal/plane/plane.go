@@ -20,15 +20,15 @@ type Plane struct {
 	screenHeight int
 	frameCount   int
 	texture      *image.Paletted
-	A, B, C      Vector
+	A, B, C      utils.Vector
 }
 
 func (p *Plane) Draw(buffer *image.RGBA) {
 	currentTime := float64(p.frameCount) * 2e4
 
-	p.A = NewVector(currentTime/34984.0, -16, currentTime/43512.0)
-	p.B = rotY(0.32).MulVec(NewVector(256, 0, 0))
-	p.C = rotY(0.32).MulVec(NewVector(0, 0, 256))
+	p.A = utils.NewVector(currentTime/34984.0, -16, currentTime/43512.0)
+	p.B = utils.RotY(0.32).MulVec(utils.NewVector(256, 0, 0))
+	p.C = utils.RotY(0.32).MulVec(utils.NewVector(0, 0, 256))
 
 	p.drawPlane(buffer)
 

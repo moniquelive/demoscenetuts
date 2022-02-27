@@ -8,7 +8,6 @@ import (
 	"image"
 	"image/draw"
 
-	"github.com/moniquelive/demoscenetuts/internal/rand"
 	"github.com/moniquelive/demoscenetuts/internal/utils"
 )
 
@@ -38,7 +37,7 @@ func (c *Filter) Draw(screen *image.RGBA) {
 	height := screen.Rect.Dy()
 
 	for x := 0; x < width/2; x++ {
-		i := ((height-hlf-1)*width + rand.Between(hlf, width-hlf)) * 4
+		i := ((height-hlf-1)*width + utils.Between(hlf, width-hlf)) * 4
 		c.bg.Pix[i+0] = 255
 		c.bg.Pix[i+1] = 255
 		c.bg.Pix[i+2] = 255

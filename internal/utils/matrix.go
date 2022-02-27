@@ -1,4 +1,4 @@
-package plane
+package utils
 
 import "math"
 
@@ -35,7 +35,7 @@ func (m Matrix) MulVec(v Vector) (r Vector) {
 	return
 }
 
-func rotX(theta float64) Matrix {
+func RotX(theta float64) Matrix {
 	c := math.Cos(theta)
 	s := math.Sin(theta)
 	return NewMatrix(
@@ -44,7 +44,7 @@ func rotX(theta float64) Matrix {
 		0, -s, c)
 }
 
-func rotY(theta float64) Matrix {
+func RotY(theta float64) Matrix {
 	c := math.Cos(theta)
 	s := math.Sin(theta)
 	return NewMatrix(
@@ -53,7 +53,7 @@ func rotY(theta float64) Matrix {
 		s, 0, c)
 }
 
-func rotZ(theta float64) Matrix {
+func RotZ(theta float64) Matrix {
 	c := math.Cos(theta)
 	s := math.Sin(theta)
 	return NewMatrix(

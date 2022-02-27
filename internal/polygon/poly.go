@@ -1,6 +1,10 @@
 package polygon
 
-import "image"
+import (
+	"image"
+
+	"github.com/moniquelive/demoscenetuts/internal/utils"
+)
 
 // one entry of the edge table
 type edge_data struct {
@@ -23,8 +27,8 @@ func (p *Polygon) initEdgeTable() {
  * scan along one edge of the poly, i.e. interpolate all values and store
  * in the edge table
  */
-func (p *Polygon) scanEdge(p1 Vector, tx1, ty1, px1, py1 int,
-	p2 Vector, tx2, ty2, px2, py2 int) {
+func (p *Polygon) scanEdge(p1 utils.Vector, tx1, ty1, px1, py1 int,
+	p2 utils.Vector, tx2, ty2, px2, py2 int) {
 	// we can't handle this case, so we recall the proc with reversed params
 	// saves having to swap all the vars, but it's not good practice
 	if p2[1] < p1[1] {

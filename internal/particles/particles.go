@@ -19,7 +19,7 @@ type Particles struct {
 	scaleX       [320]int
 	scaleY       [200]int
 	baseDist     float64
-	pts          [4096]Vector
+	pts          [4096]utils.Vector
 	page1        [64000]byte
 	page2        [64000]byte
 	colorTable   [256][3]byte
@@ -41,9 +41,9 @@ func (r *Particles) Draw(buffer *image.RGBA) {
 	r.blur()
 	// setup the position of the object
 	r.baseDist = 256.0 + 64.0*math.Sin(currentTime/327.0)
-	rx := rotX(2.0 * math.Pi * math.Sin(currentTime/289.0))
-	ry := rotY(2.0 * math.Pi * math.Cos(currentTime/307.0))
-	rz := rotZ(-2.0 * math.Pi * math.Sin(currentTime/251.0))
+	rx := utils.RotX(2.0 * math.Pi * math.Sin(currentTime/289.0))
+	ry := utils.RotY(2.0 * math.Pi * math.Cos(currentTime/307.0))
+	rz := utils.RotZ(-2.0 * math.Pi * math.Sin(currentTime/251.0))
 	obj := rx.MulMat(ry).MulMat(rz)
 	// draw the particles
 	for i := 0; i < len(r.pts); i++ {
@@ -83,10 +83,10 @@ func (r *Particles) Setup() (int, int, int) {
 	}
 
 	for i := 0; i < len(r.pts); i++ {
-		rx := rotX(2.0 * math.Pi * math.Sin(float64(i)/203.0))
-		ry := rotY(2.0 * math.Pi * math.Cos(float64(i)/157.0))
-		rz := rotZ(-2.0 * math.Pi * math.Cos(float64(i)/181.0))
-		v := NewVector(64.0+16.0*math.Sin(float64(i)/191.0), 0, 0)
+		rx := utils.RotX(2.0 * math.Pi * math.Sin(float64(i)/203.0))
+		ry := utils.RotY(2.0 * math.Pi * math.Cos(float64(i)/157.0))
+		rz := utils.RotZ(-2.0 * math.Pi * math.Cos(float64(i)/181.0))
+		v := utils.NewVector(64.0+16.0*math.Sin(float64(i)/191.0), 0, 0)
 		r.pts[i] = rx.MulMat(ry).MulMat(rz).MulVec(v)
 	}
 	return r.screenWidth, r.screenHeight, 2
@@ -113,10 +113,9 @@ func (r *Particles) blur() {
 		// calculate the filter for all the other pixels
 		for i := 1; i < 319; i++ {
 			// calculate the average
-			b := (
-				int(r.page1[offs-321]) + int(r.page1[offs-320]) + int(r.page1[offs-319]) +
-					int(r.page1[offs-1]) + int(r.page1[offs+1]) +
-					int(r.page1[offs+319]) + int(r.page1[offs+320]) + int(r.page1[offs+321])) >> 3
+			b := (int(r.page1[offs-321]) + int(r.page1[offs-320]) + int(r.page1[offs-319]) +
+				int(r.page1[offs-1]) + int(r.page1[offs+1]) +
+				int(r.page1[offs+319]) + int(r.page1[offs+320]) + int(r.page1[offs+321])) >> 3
 			if b > 16 {
 				b -= 16
 			} else {
@@ -132,11 +131,11 @@ func (r *Particles) blur() {
 	}
 }
 
-func (r *Particles) drawSingle(v Vector) {
+func (r *Particles) drawSingle(v utils.Vector) {
 	// calculate the screen coordinates of the particle
-	iz := 1.0 / (v.v[2] + r.baseDist)
-	x := 160.0 + 160.0*v.v[0]*iz
-	y := 100.0 + 160.0*v.v[1]*iz
+	iz := 1.0 / (v[2] + r.baseDist)
+	x := 160.0 + 160.0*v[0]*iz
+	y := 100.0 + 160.0*v[1]*iz
 	// clipping
 	if (x < 0) || (x > 319) || (y < 0) || (y > 199) {
 		return

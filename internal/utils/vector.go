@@ -1,4 +1,4 @@
-package polygon
+package utils
 
 import "math"
 
@@ -25,7 +25,7 @@ func (v Vector) Sub(a Vector) (r Vector) {
 	return
 }
 
-func (v Vector) normalize() Vector {
+func (v Vector) Normalize() Vector {
 	id := 1.0 / math.Sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2])
 	return NewVector(v[0]*id, v[1]*id, v[2]*id)
 }
