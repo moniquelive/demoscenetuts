@@ -26,22 +26,21 @@ type Demo interface {
 }
 
 func FillDemos() map[string]Demo {
-	m := make(map[string]Demo)
-	m["stars"] = &stars.Stars{}
-	m["3d"] = &stars3D.Stars{}
-	m["crossfade"] = &crossfade.Cross{}
-	m["plasma"] = &plasma.Plasma{}
-	m["filter"] = &filters.Filter{}
-	m["cyber1"] = &cyber1.Lerp{}
-	m["bifilter"] = &bifilter.Bifilter{}
-	m["bump"] = &bump.Bump{}
-	m["mandelbrot"] = &mandelbrot.Mandelbrot{}
-	m["textmap"] = &textmap.Textmap{}
-	m["rotozoom"] = &rotozoom.Rotozoom{}
-	m["particles"] = &particles.Particles{}
-	m["span"] = &span.Span{}
-	m["polygon"] = &polygon.Polygon{}
-	m["plane"] = &plane.Plane{}
-	return m
+	return map[string]Demo{
+		"stars":      &stars.Stars{},
+		"3d":         &stars3D.Stars{},
+		"crossfade":  &crossfade.Cross{},
+		"plasma":     &plasma.Plasma{},
+		"filter":     &filters.Filter{},
+		"cyber1":     &cyber1.Lerp{},
+		"bifilter":   &bifilter.Bifilter{},
+		"bump":       &bump.Bump{},
+		"mandelbrot": &mandelbrot.Mandelbrot{},
+		"textmap":    &textmap.Textmap{},
+		"rotozoom":   &rotozoom.Rotozoom{},
+		"particles":  &particles.Particles{},
+		"span":       &span.Span{},
+		"polygon":    &polygon.Polygon{},
+		"plane":      &plane.Plane{},
+	}
 }
-
