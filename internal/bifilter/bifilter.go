@@ -141,11 +141,10 @@ func (c *Bifilter) DistortBili(r *image.RGBA, x1 int, y1 int, x2 int, y2 int) {
 					o3 := (dY*320 + dX + 320) * 4
 					o4 := (dY*320 + dX + 321) * 4
 					r.Pix[dst+rgb] = uint8(
-						utils.ConstrainU32((
-							(uint32(c.bg.Pix[o1+rgb])*uint32((8-cX)*(8-cY)))+
-								(uint32(c.bg.Pix[o2+rgb])*uint32(cX*(8-cY)))+
-								(uint32(c.bg.Pix[o3+rgb])*uint32((8-cX)*cY))+
-								(uint32(c.bg.Pix[o4+rgb])*uint32(cX*cY)))>>6,
+						utils.Constrain(((uint32(c.bg.Pix[o1+rgb])*uint32((8-cX)*(8-cY)))+
+							(uint32(c.bg.Pix[o2+rgb])*uint32(cX*(8-cY)))+
+							(uint32(c.bg.Pix[o3+rgb])*uint32((8-cX)*cY))+
+							(uint32(c.bg.Pix[o4+rgb])*uint32(cX*cY)))>>6,
 							0, 255))
 				}
 			} else {

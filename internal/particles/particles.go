@@ -148,8 +148,8 @@ func (r *Particles) drawSingle(v utils.Vector) {
 	sx = sx & 0x7
 	sy = sy & 0x7
 	// add antialias particle to buffer, check for overflow
-	r.page2[offs] = byte(utils.ConstrainI(int(r.page2[offs])+(7-sx)*(7-sy), 0, 255))
-	r.page2[offs+1] = byte(utils.ConstrainI(int(r.page2[offs+1])+(7-sy)*sx, 0, 255))
-	r.page2[offs+320] = byte(utils.ConstrainI(int(r.page2[offs+320])+sy*(7-sx), 0, 255))
-	r.page2[offs+321] = byte(utils.ConstrainI(int(r.page2[offs+321])+sy*sx, 0, 255))
+	r.page2[offs] = byte(utils.Constrain(int(r.page2[offs])+(7-sx)*(7-sy), 0, 255))
+	r.page2[offs+1] = byte(utils.Constrain(int(r.page2[offs+1])+(7-sy)*sx, 0, 255))
+	r.page2[offs+320] = byte(utils.Constrain(int(r.page2[offs+320])+sy*(7-sx), 0, 255))
+	r.page2[offs+321] = byte(utils.Constrain(int(r.page2[offs+321])+sy*sx, 0, 255))
 }

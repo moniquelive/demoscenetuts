@@ -57,9 +57,9 @@ func (c *Filter) Draw(screen *image.RGBA) {
 				}
 			}
 			i := (y*width + x) * 4
-			c.bg.Pix[i+0] = uint8(utils.ConstrainI(acc[0]>>3, 0, 255))
-			c.bg.Pix[i+1] = uint8(utils.ConstrainI(acc[1]>>3, 0, 255))
-			c.bg.Pix[i+2] = uint8(utils.ConstrainI(acc[2]>>3, 0, 255))
+			c.bg.Pix[i+0] = uint8(utils.Constrain(acc[0]>>3, 0, 255))
+			c.bg.Pix[i+1] = uint8(utils.Constrain(acc[1]>>3, 0, 255))
+			c.bg.Pix[i+2] = uint8(utils.Constrain(acc[2]>>3, 0, 255))
 		}
 	}
 }

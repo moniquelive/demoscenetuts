@@ -100,7 +100,7 @@ func (c *Plasma) update(r *image.RGBA) {
 		for x := 0; x < w; x++ {
 			for rgb := 0; rgb < 4; rgb++ {
 				r.Pix[loc+rgb] = uint8(
-					utils.ConstrainU32(
+					utils.Constrain(
 						uint32(c.bg.Pix[loc+rgb])+
 							uint32(c.plasma1.Pix[src1+rgb])>>3+
 							uint32(c.plasma2.Pix[src2+rgb])>>3+

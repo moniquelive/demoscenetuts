@@ -62,7 +62,7 @@ func (b *Bump) computeLight() {
 			// then fade if according to the distance, and a random coefficient
 			c := int(LightSize*dist) + (rand.Int() & 7) - 3
 			// clip it
-			c = utils.ConstrainI(c, 0, 255)
+			c = utils.Constrain(c, 0, 255)
 			// and store it
 			b.light[(y<<8)+x] = byte(255 - c)
 		}
@@ -103,7 +103,7 @@ func (b *Bump) updateBump(r *image.RGBA, lx1, ly1, lx2, ly2, zoom int) {
 				c += int(b.light[(y<<8)+x])
 			}
 			// make sure it's not too big
-			c = utils.ConstrainI(c, 0, 255)
+			c = utils.Constrain(c, 0, 255)
 			// look up the colour multiplied by the light coeficient
 			r.Pix[offs+0] = byte(float64(b.cm.Pix[offs+0]) * float64(c) / 256.0)
 			r.Pix[offs+1] = byte(float64(b.cm.Pix[offs+1]) * float64(c) / 256.0)

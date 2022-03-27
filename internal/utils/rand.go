@@ -17,9 +17,9 @@ func (r *rand) Next() uint32 {
 	return r.w
 }
 
-func NextUint32() uint32 {
-	return TheRand.Next()
-}
+//func NextUint32() uint32 {
+//	return TheRand.Next()
+//}
 
 func Random() float64 {
 	return float64(TheRand.Next()) / math.MaxUint32

@@ -8,33 +8,28 @@ import (
 	"log"
 	"math"
 	"os"
+
+	"golang.org/x/exp/constraints"
 )
 
-func Constrain(i, low, high float64) float64 {
-	return math.Max(math.Min(i, high), low)
+type Numeric interface {
+	constraints.Integer | constraints.Float
 }
 
-func ConstrainI(i, low, high int) int {
-	return int(math.Max(math.Min(float64(i), float64(high)), float64(low)))
+func Max[T Numeric](x, y T) T {
+	return T(math.Max(float64(x), float64(y)))
 }
 
-func ConstrainU8(i, low, high uint8) uint8 {
-	return uint8(math.Max(math.Min(float64(i), float64(high)), float64(low)))
+func Min[T Numeric](x, y T) T {
+	return T(math.Min(float64(x), float64(y)))
 }
 
-func ConstrainU32(i, low, high uint32) uint32 {
-	return uint32(math.Max(math.Min(float64(i), float64(high)), float64(low)))
+func Constrain[T Numeric](i, low, high T) T {
+	return Max(Min(i, high), low)
 }
 
-func Interpolate(i, start1, stop1, start2, stop2 float64) float64 {
-	//return i * (maxTo - minTo) / (maxFrom - minFrom)
-	newVal := (i-start1)/(stop1-start1)*(stop2-start2) + start2
-	return newVal
-	//if start2 < stop2 {
-	//	return Constrain(newVal, start2, stop2)
-	//} else {
-	//	return Constrain(newVal, stop2, start2)
-	//}
+func Interpolate[T Numeric](i, start1, stop1, start2, stop2 T) T {
+	return (i-start1)/(stop1-start1)*(stop2-start2) + start2
 }
 
 func Fill(buffer *image.RGBA, rgba color.RGBA) {
@@ -91,7 +86,7 @@ func LoadBufferPaletted(b []byte) *image.Paletted {
 	return pal
 }
 
-func Lerp(a, b, k float64) float64 {
+func Lerp[T Numeric](a, b, k T) T {
 	return a + (b-a)*k //easeInOutBack(k)
 }
 
@@ -101,4 +96,3 @@ func Memset(a *[64000]uint16, v uint16) {
 		copy(a[bp:], a[:bp])
 	}
 }
-
