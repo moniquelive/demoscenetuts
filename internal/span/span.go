@@ -30,7 +30,6 @@ type Span struct {
 	screenHeight int
 	frameCount   int
 	texture      *image.Paletted
-	texcoord     [128000]byte
 	light        [256]byte
 	lut          [65536]byte
 	zbuffer      [64000]uint16
